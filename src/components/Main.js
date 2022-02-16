@@ -4,6 +4,7 @@ import List from "./List";
 import AddItem from "./AddItem";
 import Alert from "./Alert";
 import CountArea from "./CountArea";
+import Search from "./Search";
 
 const Main = () => {
   const [showAlert, setShowAlert] = useState(false);
@@ -43,31 +44,36 @@ const Main = () => {
     const listItems = items.filter((item) => item.id !== id);
     setAndSaveItems(listItems);
   };
-
+  const [search, setSearch] = useState("");
+  const filteredItems = () => {
+    return items.filter((item) =>
+      item.title.toLowerCase().includes(search.toLowerCase())
+    );
+  };
   return (
     <>
-      {showAlert ? (
+      {showAlert && (
         <Alert
           setShowAlert={setShowAlert}
           color="green"
           label="Success"
           text="Add new item to items."
         />
-      ) : (
-        ""
       )}
-      <main className="p-20 bg-slate-300">
-        <CountArea items={items} />
-
-        <div className="bg-gray-400 p-10 rounded-lg">
-          <AddItem
-            newItem={newItem}
-            setNewItem={setNewItem}
-            handleSubmit={handleSubmit}
-          />
+      <main className="md:px-56 md:py-10 sm:p-20 bg-slate-300">
+        <div className="bg-white text-slate-200 font-bold mx-auto p-5 rounded-lg">
+          {!search && (
+            <AddItem
+              newItem={newItem}
+              setNewItem={setNewItem}
+              handleSubmit={handleSubmit}
+            />
+          )}
+          <CountArea items={items} />
+          <Search search={search} setSearch={setSearch} />
           {items.length ? (
             <List
-              items={items}
+              items={filteredItems()}
               handleChecked={handleChecked}
               handleDelete={handleDelete}
             />
