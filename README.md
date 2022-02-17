@@ -8,6 +8,7 @@
 
 - React
 - Javascript
+- Tailwindcss
 
 ## Setting up development 🛠
 
