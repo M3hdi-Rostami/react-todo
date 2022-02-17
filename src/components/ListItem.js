@@ -18,8 +18,16 @@ const ListItem = ({ item, handleChecked, handleDelete }) => {
         >
           {item.title}
         </strong>
+        {item.checked && (
+          <span className="bg-green-100 text-green-700 px-2 py-1 rounded-lg ml-2 font-normal text-xs">
+            done
+          </span>
+        )}
       </div>
-      <span className="cursor-pointer bg-red-200 p-2 rounded-lg hover:bg-red-300" onClick={() => handleDelete(item.id)}>
+      <span
+        className="cursor-pointer bg-red-200 p-2 rounded-lg hover:bg-red-300"
+        onClick={() => handleDelete(item.id)}
+      >
         <Trash size="22" color="#697689" variant="Bold" />
       </span>
     </li>
