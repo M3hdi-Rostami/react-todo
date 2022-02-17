@@ -19,8 +19,8 @@ const ListItem = ({ item, handleChecked, handleDelete }) => {
           {item.title}
         </strong>
       </div>
-      <span className="cursor-pointer" onClick={() => handleDelete(item.id)}>
-        <Trash size="25" color="#697689" variant="Bold" />
+      <span className="cursor-pointer bg-red-200 p-2 rounded-lg hover:bg-red-300" onClick={() => handleDelete(item.id)}>
+        <Trash size="22" color="#697689" variant="Bold" />
       </span>
     </li>
   );
