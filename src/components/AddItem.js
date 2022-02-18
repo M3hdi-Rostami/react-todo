@@ -13,7 +13,7 @@ const AddItem = ({ newItem, setNewItem, handleSubmit }) => {
         onChange={(e) => setNewItem(e.target.value)}
         type="text"
         placeholder="Enter your task"
-        className="block w-full p-3 bg-white text-sky-500 border border-slate-300 rounded-md text-sm placeholder-slate-400
+        className="block w-full p-3 bg-white text-sky-500 border border-slate-300 rounded-lg text-sm placeholder-slate-400
       focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
       disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none
       focus:invalid:border-red-500 focus:invalid:ring-red-500

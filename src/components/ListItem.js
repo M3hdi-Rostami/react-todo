@@ -1,9 +1,9 @@
 import React from "react";
-import { Trash } from "iconsax-react";
+import { CloseCircle } from "iconsax-react";
 
 const ListItem = ({ item, handleChecked, handleDelete }) => {
   return (
-    <li className="item flex items-center justify-between bg-slate-200 my-3 p-3 rounded-md">
+    <li className="item flex items-center justify-between bg-slate-200 my-3 p-3 rounded-lg">
       <div className="flex items-center">
         <input
           type="checkbox"
@@ -24,12 +24,13 @@ const ListItem = ({ item, handleChecked, handleDelete }) => {
           </span>
         )}
       </div>
-      <span
-        className="cursor-pointer bg-red-200 p-2 rounded-lg hover:bg-red-300"
+      <CloseCircle
+        className="cursor-pointer"
+        size="25"
+        color="#334155"
+        variant="Bulk"
         onClick={() => handleDelete(item.id)}
-      >
-        <Trash size="22" color="#697689" variant="Bold" />
-      </span>
+      />
     </li>
   );
 };
