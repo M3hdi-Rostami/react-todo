@@ -5,6 +5,7 @@ import Alert from "./Alert";
 import CountArea from "./CountArea";
 import Search from "./Search";
 import { Danger, CloseCircle, NotificationCircle } from "iconsax-react";
+import apiRequest from "../services/apiRequest";
 
 const Main = () => {
   const API_URL = "http://localhost:8000/items";
@@ -14,20 +15,17 @@ const Main = () => {
     JSON.parse(localStorage.getItem("items")) || []
   );
   const [search, setSearch] = useState("");
-  const [fetchError, setFetchError] = useState(null);
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // localStorage.setItem("items", JSON.stringify(items));
     const fetchItems = async () => {
       try {
         setLoading(true);
-        const response = await fetch(API_URL);
-        if (!response.ok) throw Error("Did not received expected data.");
-        const listItems = await response.json();
+        const listItems = await apiRequest(API_URL);
         setItems(listItems);
       } catch (error) {
-        setFetchError(error.message);
+        setError(error.message);
       } finally {
         setLoading(false);
       }
@@ -42,15 +40,27 @@ const Main = () => {
     addItem(newItem);
     setNewItem("");
   };
-  const addItem = (title) => {
+  const addItem = async (title) => {
     const item = {
       id: items.length ? items[items.length - 1].id + 1 : 1,
       checked: false,
       title,
     };
-    const listItems = [...items, item];
-    setItems(listItems);
-    setShowAlert(true);
+    try {
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(item),
+      };
+      const savedItem = await apiRequest(API_URL, options);
+      const listItems = [...items, savedItem];
+      setItems(listItems);
+      setShowAlert(true);
+    } catch (error) {
+      setError(error.message);
+    }
   };
   const handleChecked = (id) => {
     const listItems = items.map((item) =>
@@ -80,17 +90,14 @@ const Main = () => {
       )}
       <main className="md:px-56 md:py-10 sm:p-20 bg-slate-300">
         <div className="bg-white text-slate-200 font-bold mx-auto p-5 rounded-lg">
-          {fetchError && (
+          {error && (
             <div className="p-2 rounded-lg bg-red-100 text-red-700 text-center mb-3 text-sm flex items-center justify-between">
               <div className="flex items-center">
                 <Danger size="25" color="#f47373" variant="Bulk" />
                 <strong className="ml-2">Error:</strong>
-                <span className="font-light ml-1">{fetchError}</span>
+                <span className="font-light ml-1">{error}</span>
               </div>
-              <span
-                className="cursor-pointer"
-                onClick={() => setFetchError(null)}
-              >
+              <span className="cursor-pointer" onClick={() => setError(null)}>
                 <CloseCircle size="25" color="#f47373" variant="Bulk" />
               </span>
             </div>
