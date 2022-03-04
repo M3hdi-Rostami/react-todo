@@ -16,9 +16,11 @@
 
 2. type `npm install` or `yarn install`
 
-5. type `npm run start` or `yarn start` for development
+3. type `npm run start:server` or `yarn start:server` for start server
 
-6. type `npm run build` or `yarn build` for production
+4. type `npm run start` or `yarn start` for development
+
+5. type `npm run build` or `yarn build` for production
 
 ## License
 
