@@ -18,18 +18,18 @@ const Main = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const fetchItems = async () => {
+    try {
+      setLoading(true);
+      const listItems = await apiRequest(API_URL);
+      setItems(listItems);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        setLoading(true);
-        const listItems = await apiRequest(API_URL);
-        setItems(listItems);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchItems();
   }, []);
 
@@ -54,10 +54,9 @@ const Main = () => {
         },
         body: JSON.stringify(item),
       };
-      const savedItem = await apiRequest(API_URL, options);
-      const listItems = [...items, savedItem];
-      setItems(listItems);
+      await apiRequest(API_URL, options);
       setShowAlert(true);
+      fetchItems();
     } catch (error) {
       setError(error.message);
     }
@@ -68,9 +67,20 @@ const Main = () => {
     );
     setItems(listItems);
   };
-  const handleDelete = (id) => {
-    const listItems = items.filter((item) => item.id !== id);
-    setItems(listItems);
+  const handleDelete = async (id) => {
+    try {
+      const options = {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      await apiRequest(`${API_URL}/${id}`, options);
+      setShowAlert(true);
+      fetchItems();
+    } catch (error) {
+      setError(error.message);
+    }
   };
   const filteredItems = () => {
     return items.filter((item) =>
